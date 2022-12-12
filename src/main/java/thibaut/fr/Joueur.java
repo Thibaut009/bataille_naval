@@ -49,6 +49,9 @@ public class Joueur {
             if (this.coordonneesX > 4 | this.coordonneesY > 4 | this.coordonneesX == 0 | this.coordonneesY == 0) {
                 System.out.println("\n Coordonnées invalides. Veuillez réessayer.");
                 i = i-1;
+            } else if (grille[this.coordonneesX][this.coordonneesY] == navire) {
+                System.out.println("\n vous avez déja un navire à cet endroit. Choisissez des coordonnées différentes.");
+                i = i-1;
             } else {
                 grille[coordonneesX][coordonneesY] = navire;
             }
