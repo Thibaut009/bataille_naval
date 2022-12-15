@@ -3,10 +3,11 @@ import java.util.Scanner;
 
 public class Joueur {
     String nom;
-    char[][] grille = new char[5][5];
+    int tailleGrille;
+    char[][] grille;
     int coordonneesX;
     int coordonneesY;
-    char[][] positionNavire = new char[5][5];
+    char[][] positionNavire;
     int nbNavireCouler;
     int coordonneesTir_X;
     int coordonneesTir_Y;
@@ -15,38 +16,31 @@ public class Joueur {
     char coupDansLeau = 'O';
     char navire = '@';
 
-    Joueur (String nom) {
+    Joueur (String nom, int tailleGrille) {
         this.nom = nom;
+        this.tailleGrille = tailleGrille;
+        grille = new char[tailleGrille+1][tailleGrille+1];
+        positionNavire = new char[tailleGrille+1][tailleGrille+1];
         creerGrille();
     }
 
     private void creerGrille() {
-        for (int i = 0; i <5; i++) { 
-            for (int j = 0; j < 5; j++) {
-                if (i == 0 && j >= 0) {
-                    char c = (char)(j+'0');
-                    grille[i][j] = c;
-
-                } else if (j == 0 && i > 0) {
-                    char c = (char)(i+'0');
-                    grille[i][j] = c;
-
-                } else {
-                    grille[i][j] = vide;
-                }
-            } 
+        for (int i = 1; i <= tailleGrille; i++) {
+            for (int j = 1; j <= tailleGrille; j++) {
+                grille[i][j] = vide;
+            }
         } 
     }
 
     public void addNavire() {
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= tailleGrille; i++) {
             String msg = "Entrez les coordonnées du navire " + i + " : ";
             System.out.print(msg);
             Scanner coordonnees = new Scanner(System.in);
             this.coordonneesX = coordonnees.nextInt();
             this.coordonneesY = coordonnees.nextInt();
 
-            if (this.coordonneesX > 4 | this.coordonneesY > 4 | this.coordonneesX == 0 | this.coordonneesY == 0) {
+            if (this.coordonneesX > tailleGrille | this.coordonneesY > tailleGrille | this.coordonneesX == 0 | this.coordonneesY == 0) {
                 System.out.println("\n Coordonnées invalides. Veuillez réessayer.");
                 i = i-1;
             } else if (grille[this.coordonneesX][this.coordonneesY] == navire) {
@@ -59,23 +53,15 @@ public class Joueur {
     }
 
     public void grilleHiden() {
-        for (int i = 0; i <5; i++) { 
-            for (int j = 0; j < 5; j++) {
-                if (i == 0 && j >= 0) {
-                    char c = (char)(j+'0');
-                    grille[i][j] = c;
-                } else if (j == 0 && i > 0) {
-                    char c = (char)(i+'0');
-                    grille[i][j] = c;
-                } else {
-                    if (grille[i][j] == navire) {
-                        this.positionNavire[i][j] = navire;
-                    }  else {
-                        this.positionNavire[i][j] = vide;
-                    }
-                    grille[i][j] = vide;
+        for (int i = 1; i <= tailleGrille; i++) { 
+            for (int j = 1; j <= tailleGrille; j++) {
+                if (grille[i][j] == navire) {
+                    this.positionNavire[i][j] = navire;
+                }  else {
+                    this.positionNavire[i][j] = vide;
                 }
-            } 
+                grille[i][j] = vide;
+            }
         } 
     }
 
@@ -88,7 +74,7 @@ public class Joueur {
     }
 
     public void verifTir() {
-        if (this.coordonneesTir_X > 4 | this.coordonneesTir_Y > 4 | this.coordonneesTir_X == 0 | this.coordonneesTir_Y == 0) {
+        if (this.coordonneesTir_X > tailleGrille | this.coordonneesTir_Y > tailleGrille | this.coordonneesTir_X == 0 | this.coordonneesTir_Y == 0) {
             System.out.println("\n Coordonnées invalides. Veuillez réessayer.");
             ecrireTir();
             
@@ -126,18 +112,26 @@ public class Joueur {
 
     public String toString() {
         String res = "\n";
-        
-         for (int i = 0; i <5; i++) { 
-             for (int j = 0; j < 5; j++) {
-                 if (i == 0 && j >= 0 | j == 0 && i > 0) {
-                     res += grille[i][j] + " ";
 
-                 } else {
-                     res += grille[i][j] + " ";
-                 }
-             } 
-             res += "\n";
-         } 
+        for (int i = 0; i <= tailleGrille; i++) {
+            if (i >= 10) {
+                res += i + " ";
+            } else {
+                res += i + "  ";
+            }
+        }
+        res += "\n";
+        for (int i = 1; i <= tailleGrille; i++) {
+            if (i >= 10) {
+                res += i + " ";
+            } else {
+                res += i + "  ";
+            }
+            for (int j = 1; j <= tailleGrille; j++) {
+                res += grille[i][j] + "  ";
+            } 
+            res += "\n";
+        } 
         return res;
     }
 }
