@@ -103,7 +103,7 @@ public class Joueur {
     }
 
     public void partieFini() {
-        if (nbNavireCouler == 4) {
+        if (nbNavireCouler == tailleGrille) {
             System.out.println(nom + " A GAGNER !");
             System.exit(1);
         }
